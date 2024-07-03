@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Go WebAssembly JSON Parser</title>
+</head>
+<body>
+    <h1>Go WebAssembly JSON Parser</h1>
+    <input type="text" id="input" placeholder="Enter text">
+    <button onclick="sendInput()">Send</button>
+    <p id="output"></p>
+
+    <script>
+        async function sendInput() {
+            const input = document.getElementById('input').value;
+            const response = await fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: input
+            });
+
+            const output = await response.text();
+            document.getElementById('output').innerText = output;
+        }
+    </script>
+</body>
+</html>
