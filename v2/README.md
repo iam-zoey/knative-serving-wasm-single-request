@@ -1,6 +1,5 @@
 
-Once HTTP server receives data from client, it pass it into Wasm Module. 
-Then, it scans the passed data and print back. 
+Once HTTP server receives data from client, Wasm Module get the data using scanner and print.  
 
 Before running this command, make sure wasmtime is installed 
 - Document: https://docs.wasmtime.dev/cli-install.html
@@ -14,14 +13,11 @@ GOOS=wasip1 GOARCH=wasm go build -o main.wasm module.go
 ```shell 
 wasmtime run main.wasm
 ``` 
-
-### Test go module + http server 
-Uncomment line 35 in `main.go` and line 26-28 in `module.go` 
+ 
 
 
-### ⚠️  Run wasm module with server 
+###  Run wasm module with server 
 ```
 go run main.go
 curl -X POST http://localhost:8080 -d "hi" 
 ``` 
-Currently, wasm module is not working ; it does not receive the data. 

@@ -44,7 +44,7 @@ func runWasm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Return the output to the client.
-	fmt.Fprintf(w, "==== Output from wasm module:\n%s", output)
+	fmt.Fprintf(w, "==== V1: Output from wasm module:\n%s", output)
 }
 
 func main() {

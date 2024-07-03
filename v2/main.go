@@ -28,8 +28,6 @@ func main() {
 		// Prepare to capture stdout and stderr from wasmtime
 		var stdout, stderr bytes.Buffer
 
-		fmt.Println("Buffer is ready to capture stdout and stderr from wasmtime...")
-
 		// Execute the WebAssembly module that wait for user's input, read and print it from stdin
 		cmd := exec.Command("wasmtime", "main.wasm")
 		// cmd := exec.Command("go", "run", "module.go") // Run the Go module instead of the WebAssembly module for testing
