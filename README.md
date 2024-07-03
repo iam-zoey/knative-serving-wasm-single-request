@@ -6,3 +6,5 @@ In this version, the server executes the WebAssembly module and passes the data 
 
 ## v2 
 Instead of passing the data directly into the WebAssembly module (i.e., injecting the data), this version allows the WebAssembly module to grab the input and automatically print it.
+
+NOTE: README file is available in each folder with all the commands. 
