@@ -8,6 +8,7 @@ import (
 )
 
 func runWasm(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("RunWasm funciton is called")
 	var input string
 
 	switch r.Method {
@@ -32,7 +33,6 @@ func runWasm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error: 'input' parameter is required", http.StatusBadRequest)
 		return
 	}
-
 	// Run Wasmtime command with the input string as an argument.
 	cmd := exec.Command("wasmtime", "main.wasm", input)
 
