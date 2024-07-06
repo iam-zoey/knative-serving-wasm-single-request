@@ -7,6 +7,19 @@ Once HTTP server receives data from client, Wasm Module get the data using scann
  docker run --rm -it -p 8080:8080 hong0331/server-w-wasm-v2
 ```
 
+
+
+```shell 
+# TESTING: GET request 
+curl -X POST -d "Hello from curl" http://localhost:8080/
+
+# TESTING: POST request 
+curl "http://localhost:8080/?input=Hello%20from%20GET"
+
+```
+
+
+
 ----
 ## HTTP server with wasm module in local environment 
 Before running this command, make sure wasmtime is installed 
@@ -24,8 +37,3 @@ wasmtime run main.wasm
  
 
 
-###  Run wasm module with server 
-```
-go run main.go
-curl -X POST http://localhost:8080 -d "hi" 
-``` 

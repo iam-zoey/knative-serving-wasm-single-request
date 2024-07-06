@@ -27,3 +27,11 @@ Uncomment this part if you are running a go module, instead of WebAssembly
 // func main() {
 // 	runwasm()
 // }
+/*
+============================================
+FOR TESTING:
+Uncomment this part if you are running a go module, instead of WebAssembly
+*/
+// func main() {
+// 	runwasm()
+// }

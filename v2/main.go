@@ -8,52 +8,61 @@ import (
 	"os/exec"
 )
 
-func main() {
+func runWasm(w http.ResponseWriter, r *http.Request) {
+	var input string
 
-	// Handle POST requests
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-			return
-		}
-
-		// Read the entire request body
+	switch r.Method {
+	case http.MethodGet:
+		// Read input from query parameter for GET requests
+		input = r.URL.Query().Get("input")
+	case http.MethodPost:
+		// Read input from request body for POST requests
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, "Failed to read request body", http.StatusInternalServerError)
+			http.Error(w, "Error reading request body", http.StatusInternalServerError)
 			return
 		}
 		defer r.Body.Close()
+		input = string(body)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
-		// Prepare to capture stdout and stderr from wasmtime
-		var stdout, stderr bytes.Buffer
+	if input == "" {
+		http.Error(w, "Error: 'input' parameter is required", http.StatusBadRequest)
+		return
+	}
 
-		// Execute the WebAssembly module that wait for user's input, read and print it from stdin
-		cmd := exec.Command("wasmtime", "main.wasm")
-		// cmd := exec.Command("go", "run", "module.go") // Run the Go module instead of the WebAssembly module for testing
+	// Define stdout and stderr buffers
+	var stdout, stderr bytes.Buffer
 
-		// Set the input from HTTP request body as stdin for the wasm command
-		cmd.Stdin = bytes.NewReader(body)
+	//cmd := exec.Command("wasmtime", "main.wasm")
+	cmd := exec.Command("go", "run", "module.go") // Run the Go module instead of the WebAssembly module for testing
 
-		// Capture stdout and stderr from wasmtime command
-		cmd.Stdout = &stdout
-		cmd.Stderr = &stderr
+	// Set the input from HTTP request body as stdin for the command
+	cmd.Stdin = bytes.NewReader([]byte(input))
 
-		// Run the command
-		err = cmd.Run()
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Failed to execute WebAssembly module: %v\nStderr: %s", err, stderr.String()), http.StatusInternalServerError)
-			return
-		}
+	// Capture stdout and stderr from the command
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
 
-		// Write the output of the WebAssembly module execution to the response
-		w.Header().Set("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusOK)
-		fmt.Println(stdout.String())
+	// Run the command
+	err := cmd.Run()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to execute module: %v\nStderr: %s", err, stderr.String()), http.StatusInternalServerError)
+		return
+	}
 
-	})
+	// Write the output of the command execution to the response
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, stdout.String())
+}
 
+func main() {
 	// Start the HTTP server
+	http.HandleFunc("/", runWasm)
 	fmt.Println("Listening on port 8080...")
 	http.ListenAndServe(":8080", nil)
 }
