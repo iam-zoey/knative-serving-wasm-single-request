@@ -1,0 +1,13 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: wasm-service-test
+spec:
+  template:
+    spec:
+      containers:
+        - image: hong0331/server-w-wasm-v1
+          ports:
+            - containerPort: 8080
+
+    

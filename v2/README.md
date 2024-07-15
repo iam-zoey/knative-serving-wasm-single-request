@@ -2,6 +2,25 @@
 Once HTTP server receives data from client, Wasm Module get the data using scanner and print.  
 
 
+
+
+### Running w/ knative service 
+```
+kubectl apply -f service.yaml
+```
+
+To check on your domain, 
+```
+kubectl get kservice
+```
+
+```
+curl -X POST -d <your domain>
+curl "<your-domain>/?input=Hello%20from%20GET"
+```
+
+
+
 ### HTTP server with WASM module in container 
 ```
  docker run --rm -it -p 8080:8080 hong0331/server-w-wasm-v2
