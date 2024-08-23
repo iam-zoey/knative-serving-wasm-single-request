@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: hong0331/final-test-1 #TODO: Put your image name here
+        - image: hong0331/knative-serving-wasm-single-request  #CONFIGUREME: Put your image name here
           ports:
             - containerPort: 8080
 
