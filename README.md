@@ -1,5 +1,7 @@
 # Per-Request for Wasmtime
-This project explores the integration of WebAssembly (WASM) within Knative Serving. In this approach, the HTTP server handles incoming requests by launching a new Wasmtime instance for each request. The server forwards the received data to the WASM module, which processes it using Scanner to read the input and Print to output the results. While this approach is straightforward, it may cause performance overhead due to the repeated initialization of Wasmtime for every request. 
+This project explores the integration of WebAssembly (WASM) within Knative Serving. The Go HTTP server handles http requests and forwards data to the WASM module via standard input. The WASM module processes the input (print the data) and returns results through standard output, which are then sent back as the HTTP response.
+
+This model handles incoming requests by launching a new Wasmtime instance for each request. The server forwards the received data to the WASM module, which processes it using Scanner to read the input and Print to output the results. While this approach is straightforward, it may cause performance overhead due to the repeated initialization of Wasmtime for every request. 
 
 
 ## Project Structure 
